@@ -1,4 +1,4 @@
-package id.ac.ui.uibg.auth.user;
+package id.ac.ui.uibg.auth.enums;
 
 public enum Role {
     USER,

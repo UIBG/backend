@@ -1,4 +1,4 @@
-package id.ac.ui.uibg.auth.authentication;
+package id.ac.ui.uibg.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
-    private String email;
+    private String username;
     private String password;
 }

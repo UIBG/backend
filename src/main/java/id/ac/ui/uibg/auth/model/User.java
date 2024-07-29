@@ -1,5 +1,6 @@
-package id.ac.ui.uibg.auth.user;
+package id.ac.ui.uibg.auth.model;
 
+import id.ac.ui.uibg.auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +24,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private UUID id;
-    private String firstname;
-    private String lastname;
+    @Column(unique = true)
+    private String username;
+    @Column(unique = true)
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -37,7 +39,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

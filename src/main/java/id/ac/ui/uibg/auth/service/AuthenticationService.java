@@ -1,9 +1,11 @@
-package id.ac.ui.uibg.auth.authentication;
+package id.ac.ui.uibg.auth.service;
 
-import id.ac.ui.uibg.auth.config.JwtService;
-import id.ac.ui.uibg.auth.user.Role;
-import id.ac.ui.uibg.auth.user.User;
-import id.ac.ui.uibg.auth.user.UserRepository;
+import id.ac.ui.uibg.auth.dto.AuthenticationRequest;
+import id.ac.ui.uibg.auth.dto.AuthenticationResponse;
+import id.ac.ui.uibg.auth.dto.RegisterRequest;
+import id.ac.ui.uibg.auth.enums.Role;
+import id.ac.ui.uibg.auth.model.User;
+import id.ac.ui.uibg.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +21,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
@@ -35,11 +36,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
+        var user = repository.findByUsername(request.getUsername())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
