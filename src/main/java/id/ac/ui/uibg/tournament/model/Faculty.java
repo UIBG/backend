@@ -16,6 +16,6 @@ public class Faculty {
     private UUID facultyId;
     private String facultyName;
 
-    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "facultyId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Major> majorList;
 }
