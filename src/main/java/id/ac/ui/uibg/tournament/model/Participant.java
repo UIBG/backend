@@ -17,6 +17,7 @@ public class Participant {
     private String major;
     private int batch;
     private String phoneNumber;
+    private String imageName;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
