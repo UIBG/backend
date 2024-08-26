@@ -37,18 +37,11 @@ public class TournamentService {
         if (existingParticipant.isPresent()) {
             throw new RuntimeException("User is already registered for this tournament");
         }
-
         participant.setUser(user);
         participant.setTournament(tournament);
-
-        // Save the new participant
-
-
+        tournament.getParticipantList().add(participant);
+        tournamentRepository.save(tournament);
         return participantRepository.save(participant);
-    }
-
-    public Tournament createTournament(Tournament tournament) {
-        return tournamentRepository.save(tournament);
     }
 
     public List<Tournament> getAllTournaments() {
@@ -57,21 +50,5 @@ public class TournamentService {
 
     public Optional<Tournament> getTournamentById(UUID id) {
         return tournamentRepository.findById(id);
-    }
-
-    public Tournament updateTournament(UUID id, Tournament tournamentDetails) {
-        Tournament tournament = tournamentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tournament not found"));
-
-        tournament.setName(tournamentDetails.getName());
-
-        return tournamentRepository.save(tournament);
-    }
-
-    public void deleteTournament(UUID id) {
-        Tournament tournament = tournamentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tournament not found"));
-
-        tournamentRepository.delete(tournament);
     }
 }

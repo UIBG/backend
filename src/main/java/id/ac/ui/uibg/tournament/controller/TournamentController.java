@@ -36,12 +36,6 @@ public class TournamentController {
         return ResponseEntity.ok(registeredParticipant);
     }
 
-    @PostMapping
-    public ResponseEntity<Tournament> createTournament(@RequestBody Tournament tournament) {
-        Tournament createdTournament = tournamentService.createTournament(tournament);
-        return ResponseEntity.ok(createdTournament);
-    }
-
     @GetMapping
     public ResponseEntity<List<Tournament>> getAllTournaments() {
         List<Tournament> tournaments = tournamentService.getAllTournaments();
@@ -53,20 +47,5 @@ public class TournamentController {
         return tournamentService.getTournamentById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Tournament> updateTournament(
-            @PathVariable UUID id,
-            @RequestBody Tournament tournamentDetails
-    ) {
-        Tournament updatedTournament = tournamentService.updateTournament(id, tournamentDetails);
-        return ResponseEntity.ok(updatedTournament);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTournament(@PathVariable UUID id) {
-        tournamentService.deleteTournament(id);
-        return ResponseEntity.noContent().build();
     }
 }
