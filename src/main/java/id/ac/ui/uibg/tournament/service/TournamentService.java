@@ -39,9 +39,9 @@ public class TournamentService {
         }
         participant.setUser(user);
         participant.setTournament(tournament);
-        tournament.getParticipantList().add(participant);
-        tournamentRepository.save(tournament);
-        return participantRepository.save(participant);
+        participantRepository.save(participant);
+
+        return participant;
     }
 
     public List<Tournament> getAllTournaments() {
