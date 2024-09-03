@@ -3,6 +3,7 @@ package id.ac.ui.uibg.tournament.controller;
 import id.ac.ui.uibg.tournament.model.Image;
 import id.ac.ui.uibg.tournament.model.Participant;
 import id.ac.ui.uibg.tournament.model.Tournament;
+import id.ac.ui.uibg.tournament.repository.ParticipantRepository;
 import id.ac.ui.uibg.tournament.service.TournamentService;
 import id.ac.ui.uibg.tournament.service.ImageService;
 import jakarta.validation.Valid;
@@ -22,17 +23,19 @@ public class TournamentController {
 
     private final TournamentService tournamentService;
     private final ImageService imageService;
+    private final ParticipantRepository participantRepository;
 
     @PostMapping("/{tournamentId}/register/{userId}")
     public ResponseEntity<Participant> registerParticipant(
             @PathVariable UUID tournamentId,
             @PathVariable UUID userId,
-            @Valid @RequestBody Participant participant,
+            @Valid @RequestPart("participant") Participant participant,
             @RequestParam("image") MultipartFile image
     ) throws IOException {
         Image image1 = imageService.uploadImageToFileSystem(image);
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
         registeredParticipant.setImageName(image1.getName());
+        participantRepository.save(registeredParticipant);
         return ResponseEntity.ok(registeredParticipant);
     }
 
