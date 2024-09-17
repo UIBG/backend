@@ -19,6 +19,20 @@ import java.util.List;
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http.authorizeHttpRequests((requests) -> requests
+//
+//                        .requestMatchers("/", "/home", "/product/products", "/api/v1/auth/**", "/register", "/css/**", "/js/**", "/img/**", "/scss/**", "/fonts/**").permitAll()
+//                        .requestMatchers("/product/update/**", "/product/delete/**")
+//                        .anyRequest().authenticated())
+//                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+//                        .loginPage("/login").permitAll()
+//                        .defaultSuccessUrl("/", true)
+//                        .failureUrl("/login?error=true"))
+//                .build();
+//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -33,7 +47,15 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**", "/api/tournaments/**")
+                .requestMatchers("/api/v1/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/tournaments/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
