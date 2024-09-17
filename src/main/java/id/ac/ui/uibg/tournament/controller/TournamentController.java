@@ -20,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/tournaments")
 @RequiredArgsConstructor
+@CrossOrigin
 public class TournamentController {
 
     private final TournamentService tournamentService;
