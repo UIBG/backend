@@ -26,7 +26,7 @@ public class SecurityConfiguration {
                 .cors().configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOriginPatterns(List.of("*"));
-                    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+                    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
                     return configuration;
                 }).and()
