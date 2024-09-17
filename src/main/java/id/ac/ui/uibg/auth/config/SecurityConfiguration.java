@@ -20,36 +20,23 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.authorizeHttpRequests((requests) -> requests
-//
-//                        .requestMatchers("/", "/home", "/product/products", "/api/v1/auth/**", "/register", "/css/**", "/js/**", "/img/**", "/scss/**", "/fonts/**").permitAll()
-//                        .requestMatchers("/product/update/**", "/product/delete/**")
-//                        .anyRequest().authenticated())
-//                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
-//                        .loginPage("/login").permitAll()
-//                        .defaultSuccessUrl("/", true)
-//                        .failureUrl("/login?error=true"))
-//                .build();
-//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors().configurationSource(request -> {
+        http.cors().configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOriginPatterns(List.of("*"));
                     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+                    configuration.setExposedHeaders(List.of("Authorization"));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+                    configuration.setAllowCredentials(true);
                     return configuration;
                 }).and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**")
-                .permitAll()
-                .requestMatchers("/api/tournaments/**").authenticated()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/tournaments/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
