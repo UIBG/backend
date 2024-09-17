@@ -55,4 +55,10 @@ public class TournamentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping
+    public ResponseEntity<List<Tournament>> getAllTournaments() {
+        List<Tournament> tournaments = tournamentService.getAllTournaments();
+        return ResponseEntity.ok(tournaments);
+    }
 }
