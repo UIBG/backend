@@ -1,31 +1,23 @@
 package id.ac.ui.uibg.tournament.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
+@Data
 @Table(name = "images")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "name_image")
     private String name;
 
-    @Column(nullable = false)
-    private String type;
+    @Column(name = "url_image")
+    private String url;
 
-    @Lob
-    @Column(nullable = false)
-    private byte[] imageData;
 }

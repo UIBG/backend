@@ -27,16 +27,14 @@ public class SecurityConfiguration {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOriginPatterns(List.of("*"));
                     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
-                    configuration.setExposedHeaders(List.of("Authorization"));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
-                    configuration.setAllowCredentials(true);
                     return configuration;
                 }).and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/tournaments/**").permitAll()
+                .requestMatchers("/api/tournaments/**", "/", "/upload").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
