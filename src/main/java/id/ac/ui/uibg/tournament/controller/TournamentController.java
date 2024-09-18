@@ -1,6 +1,8 @@
 package id.ac.ui.uibg.tournament.controller;
 
+import id.ac.ui.uibg.tournament.dto.FacultyDTO;
 import id.ac.ui.uibg.tournament.dto.ImageModel;
+import id.ac.ui.uibg.tournament.dto.MajorDTO;
 import id.ac.ui.uibg.tournament.model.Image;
 import id.ac.ui.uibg.tournament.model.Participant;
 import id.ac.ui.uibg.tournament.model.Tournament;
@@ -38,18 +40,19 @@ public class TournamentController {
             @PathVariable UUID tournamentId,
             @PathVariable UUID userId,
             @RequestParam("name") String name,
-            @RequestParam("faculty") String faculty,
-            @RequestParam("major") String major,
+            @RequestParam("faculty") FacultyDTO faculty,  // Binding nested object
+            @RequestParam("major") MajorDTO major,
             @RequestParam("batch") String batch,
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestPart("image") MultipartFile image
     ) throws IOException {
         Participant participant = new Participant();
         participant.setName(name);
-        participant.setFaculty(faculty);
-        participant.setMajor(major);
+        participant.setFaculty(faculty.getName());  // or whichever field is relevant
+        participant.setMajor(major.getName());
         participant.setBatch(Integer.parseInt((batch)));
         participant.setPhoneNumber(phoneNumber);;
+        participant.setTournamentName(tournamentService.getTournamentById(tournamentId).get().getName());
 
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
         try {
