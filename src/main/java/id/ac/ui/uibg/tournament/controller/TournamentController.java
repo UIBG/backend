@@ -33,12 +33,12 @@ public class TournamentController {
 
     private final List<String> allowedContentTypes = List.of("image/jpeg", "image/png", "image/jpg", "image/webp");
 
-    @PostMapping("/{tournamentId}/register/{userId}")
+    @RequestMapping(value = "/{tournamentId}/register/{userId}",method = RequestMethod.POST, consumes = { "multipart/form-data" })
     public ResponseEntity<Participant> registerParticipant(
             @PathVariable UUID tournamentId,
             @PathVariable UUID userId,
-            @Valid @RequestBody Participant participant,
-            @RequestParam("image") MultipartFile image
+            @Valid @RequestPart Participant participant,
+            @RequestPart("image") MultipartFile image
     ) throws IOException {
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
         try {
