@@ -37,9 +37,20 @@ public class TournamentController {
     public ResponseEntity<Participant> registerParticipant(
             @PathVariable UUID tournamentId,
             @PathVariable UUID userId,
-            @RequestPart("participant") @Valid Participant participant,
+            @RequestParam("name") String name,
+            @RequestParam("faculty") String faculty,
+            @RequestParam("major") String major,
+            @RequestParam("batch") String batch,
+            @RequestParam("phoneNumber") String phoneNumber,
             @RequestPart("image") MultipartFile image
     ) throws IOException {
+        Participant participant = new Participant();
+        participant.setName(name);
+        participant.setFaculty(faculty);
+        participant.setMajor(major);
+        participant.setBatch(Integer.parseInt((batch)));
+        participant.setPhoneNumber(phoneNumber);;
+
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
         try {
             registeredParticipant.setImageName(cloudService.uploadFile(image,"folder_faculty_tour"));
