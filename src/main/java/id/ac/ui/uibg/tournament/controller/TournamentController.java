@@ -37,7 +37,7 @@ public class TournamentController {
     public ResponseEntity<Participant> registerParticipant(
             @PathVariable UUID tournamentId,
             @PathVariable UUID userId,
-            @Valid @RequestPart Participant participant,
+            @RequestPart("participant") @Valid Participant participant,
             @RequestPart("image") MultipartFile image
     ) throws IOException {
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
