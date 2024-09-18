@@ -1,85 +1,47 @@
 package id.ac.ui.uibg.tournament.service;
 
-import id.ac.ui.uibg.tournament.model.File;
+import id.ac.ui.uibg.tournament.dto.ImageModel;
 import id.ac.ui.uibg.tournament.model.Image;
-import id.ac.ui.uibg.tournament.repository.FileRepository;
 import id.ac.ui.uibg.tournament.repository.ImageRepository;
-import id.ac.ui.uibg.tournament.util.ImageUtil;
+import id.ac.ui.uibg.tournament.service.CloudinaryService;
+import id.ac.ui.uibg.tournament.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
     @Autowired
     private ImageRepository imageRepository;
-    @Autowired
-    private FileRepository fileRepository;
+
 
     @Override
-    public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
-        Optional<Image> image = imageRepository.findByName(fileName);
-        return ImageUtil.decompressImage(image.orElseThrow().getImageData());
-    }
-
-    @Override
-    public void deleteImage(String fileName) {
-        imageRepository.deleteByName(fileName);
-    }
-
-    private static String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
-
-    @Override
-    public Image uploadImageToFileSystem(MultipartFile file) throws IOException {
-        Date date = new Date();
-        Image image = new Image();
-
+    public ResponseEntity<Map> uploadImage(ImageModel imageModel) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            String originalFileName = file.getOriginalFilename();
-            if (originalFileName == null) {
-                throw new IllegalArgumentException("File must have an original filename");
+            if (imageModel.getName().equals("")) {
+                return ResponseEntity.badRequest().build();
             }
-            byte[] fileTimeStampBytes = Long.toString(date.getTime()).getBytes(StandardCharsets.UTF_8);
-            byte[] fileNameBytes = originalFileName.getBytes(StandardCharsets.UTF_8);
-            messageDigest.update(fileTimeStampBytes);
-            messageDigest.update(fileNameBytes);
-            byte[] digest = messageDigest.digest();
-
-            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            String name = bytesToHex(digest) + fileExtension;
-
-            image.setName(name);
-            image.setType(file.getContentType());
-            image.setImageData(ImageUtil.compressImage(file.getBytes()));
-            imageRepository.save(image);
-            imageRepository.save(image);
-
-            if (image.getImageData() != null) {
-                return image;
+            if (imageModel.getFile().isEmpty()) {
+                return ResponseEntity.badRequest().build();
             }
-            return null;
-
-        } catch (NoSuchAlgorithmException e) {
+            Image image = new Image();
+            image.setName(imageModel.getName());
+            image.setUrl(cloudinaryService.uploadFile(imageModel.getFile(), "folder_1"));
+            if(image.getUrl() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            imageRepository.save(image);
+            return ResponseEntity.ok().body(Map.of("url", image.getUrl()));
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
+
+
     }
 }
