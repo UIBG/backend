@@ -22,6 +22,7 @@ public class Participant {
     private int batch;
     private String phoneNumber;
     private String imageName;
+    private String TournamentName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
