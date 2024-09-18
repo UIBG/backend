@@ -53,7 +53,9 @@ public class TournamentController {
 
         Participant registeredParticipant = tournamentService.registerParticipant(tournamentId, participant, userId);
         try {
-            registeredParticipant.setImageName(cloudService.uploadFile(image,"folder_faculty_tour"));
+            String imageUrl = cloudService.uploadFile(image, "folder_faculty_tour");
+            registeredParticipant.setImageName(imageUrl);
+            participantRepository.save(registeredParticipant);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
