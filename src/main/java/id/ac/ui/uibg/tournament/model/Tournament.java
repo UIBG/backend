@@ -21,8 +21,5 @@ public class Tournament {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
-    private List<Participant> participantList;
-
 
 }
