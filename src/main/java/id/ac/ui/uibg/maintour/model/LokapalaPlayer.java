@@ -12,6 +12,6 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class LokapalaPlayer extends Player{
-    private String playerId;
+    private String lokapalaId;
     private String nickname;
 }
