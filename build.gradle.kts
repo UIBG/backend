@@ -34,6 +34,19 @@ dependencies {
     implementation("com.cloudinary:cloudinary-http44:1.36.0")
     implementation("com.cloudinary:cloudinary-taglib:1.36.0")
     implementation("io.github.cdimascio:dotenv-java:2.2.4")
+    // Google Drive API dependency
+    implementation("com.google.api-client:google-api-client:1.33.0")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.33.0")
+    // https://mvnrepository.com/artifact/com.google.apis/google-api-services-drive
+    implementation("com.google.apis:google-api-services-drive:v3-rev197-1.25.0")
+
+
+    // https://mvnrepository.com/artifact/com.google.api-client/google-api-client-jackson2
+    implementation("com.google.api-client:google-api-client-jackson2:1.30.10")
+    implementation("javax.servlet:javax.servlet-api:4.0.1")
+
+
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

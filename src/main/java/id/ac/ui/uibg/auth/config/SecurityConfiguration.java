@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/tournaments/**", "/", "/upload").permitAll()
+                .requestMatchers("/api/tournaments/**", "/", "/upload", "api/teams/**", "api/drive/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
