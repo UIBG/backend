@@ -1,5 +1,6 @@
 package id.ac.ui.uibg.maintour.model;
 
+import id.ac.ui.uibg.maintour.enums.GameName;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -35,9 +36,12 @@ public class Team {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "team_id")
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
 
-    private String game; // ??
+    private GameName game; // ??
 
-    private String gameName;
+    public void addPlayer(Player player) {
+        players.add(player);
+        playerTotal = players.size(); // Update player count
+    }
 }
